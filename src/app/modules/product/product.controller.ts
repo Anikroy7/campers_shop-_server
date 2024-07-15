@@ -4,6 +4,9 @@ import { ProductServices } from "./product.service";
 import httpStatus from "http-status";
 import { uploadImageToCloudinary } from "../../utils/uploadImageToCloudinary";
 
+const stripe = require("stripe")('sk_test_51PcVTyRoCwoYSOYVC4pgiN2g2tutBPQpOpEV1aOhjuo9JPX6rtPAMSN82AFredgIJHn6slKOzRULhU5UI3reca5D00IgpsvwKw');
+
+
 const createProduct = catchAsync(async (req, res) => {
   const productData = req.body;
   const urls = [];
@@ -86,6 +89,34 @@ const deleteProduct = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const calculateOrderAmount = (items) => {
+  // Replace this constant with a calculation of the order's amount
+  // Calculate the order total on the servejr to prevent
+  // people from directly manipulating the amount on the client
+  return 1400;
+};
+const makePayment = catchAsync(async (req, res) => {
+  const { items } = req.body;
+
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: calculateOrderAmount(items),
+    currency: "aud",
+    // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+    automatic_payment_methods: {
+      enabled: true,
+    },
+  }); 
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Payment successfully",
+    clientSecret: paymentIntent.client_secret,
+    data: null
+  });
+});
+
+
 
 export const ProductControllers = {
   createProduct,
@@ -93,4 +124,5 @@ export const ProductControllers = {
   updateProduct,
   deleteProduct,
   getSingleProduct,
+  makePayment
 };

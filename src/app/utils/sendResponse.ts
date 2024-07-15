@@ -6,6 +6,7 @@ type TResponse<T> = {
   message?: string;
   token?: string;
   data: T;
+  clientSecret?:string
 };
 
 const sendResponse = <T>(res: Response, data: TResponse<T>) => {
@@ -15,6 +16,7 @@ const sendResponse = <T>(res: Response, data: TResponse<T>) => {
     message: data.message,
     data: data.data,
     token: data.token,
+    clientSecret: data.clientSecret
   });
 };
 

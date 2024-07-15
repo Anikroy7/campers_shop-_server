@@ -10,7 +10,9 @@ import { uploader } from "../../utils/uploader";
 
 const router = express.Router();
 
-router.post(
+router.post("/create-payment-intent", ProductControllers.makePayment);
+
+router.post(  
   "/",
   uploader.array("images", 5),
   (req: Request, res: Response, next: NextFunction) => {
@@ -42,5 +44,7 @@ router.put(
   ProductControllers.updateProduct
 );
 router.delete("/:id", ProductControllers.deleteProduct);
+
+
 
 export const ProductsRoutes = router;
