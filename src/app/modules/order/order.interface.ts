@@ -11,6 +11,8 @@ export type TOrder = {
     contactNo: string;
     totalPrice: number;
     products: TOrdrededProduct[];
-    clientSecret: string
+    clientSecret: string;
+    paymentIntent:string;
+    paymentMethod: string;
   };
   

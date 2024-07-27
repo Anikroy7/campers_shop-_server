@@ -29,6 +29,14 @@ const orderSchema = new Schema<TOrder>(
             type: String,
             required: true,
         },
+        paymentIntent: {
+            type: String,
+            required: true,
+        },
+        paymentMethod: {
+            type: String,
+            required: true,
+        },
         products: [{
             productId: {
                 type: mongoose.Types.ObjectId,
