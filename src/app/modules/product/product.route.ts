@@ -27,6 +27,7 @@ router.post(
   ProductControllers.createProduct
 );
 router.get("/", ProductControllers.getProducts);
+router.get("/fp", ProductControllers.getFpProducts);
 router.get("/:id", ProductControllers.getSingleProduct);
 router.put(
   "/:id",

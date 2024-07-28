@@ -11,13 +11,14 @@ const createProductIntoDB = async (payload: TProduct) => {
   return newProduct;
 };
 const getProductsFromDB = async () => {
-  const cars = await Product.find({ isDeleted: { $ne: true } }).select(
+  const products = await Product.find({ isDeleted: { $ne: true } }).select(
     "-createdAt -updatedAt -__v"
   );
-  if (cars.length === 0) {
+  if (products.length === 0) {
     throw new AppError(httpStatus.BAD_REQUEST, "There are not products here");
   }
-  return cars;
+  return products;
+  ;
 };
 
 const getSingleProductFromDB = async (_id: string) => {
@@ -73,10 +74,21 @@ const deleteProductFromDB = async (_id: string) => {
   return result;
 };
 
+
+const getFpProductsFromDB = async () => {
+  const products = (await Product.aggregate([{ $match: { isDeleted: false } }, { $sample: { size: 3 } }]));
+  if (products.length === 0) {
+    throw new AppError(httpStatus.BAD_REQUEST, "There are not products here");
+  }
+  return products;
+  ;
+};
+
 export const ProductServices = {
   createProductIntoDB,
   getProductsFromDB,
   updateProductIntoDB,
   deleteProductFromDB,
   getSingleProductFromDB,
+  getFpProductsFromDB
 };

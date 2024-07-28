@@ -117,6 +117,15 @@ const makePayment = catchAsync(async (req, res) => {
 });
 
 
+const getFpProducts = catchAsync(async (req, res) => {
+  const result = await ProductServices.getFpProductsFromDB();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Products retrieved successfully",
+    data: result,
+  });
+});
 
 export const ProductControllers = {
   createProduct,
@@ -124,5 +133,6 @@ export const ProductControllers = {
   updateProduct,
   deleteProduct,
   getSingleProduct,
-  makePayment
+  makePayment,
+  getFpProducts
 };
