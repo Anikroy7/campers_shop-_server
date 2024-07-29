@@ -57,7 +57,7 @@ const updateProduct = catchAsync(async (req, res) => {
   const productData = req.body;
   const urls = [];
 
-  if (req.files?.length > 0) {
+  if (req.files) {
     const files = Array.isArray(req.files)
       ? req.files
       : Object.values(req.files).flat();
@@ -89,24 +89,19 @@ const deleteProduct = catchAsync(async (req, res) => {
     data: result,
   });
 });
-const calculateOrderAmount = (items) => {
-  // Replace this constant with a calculation of the order's amount
-  // Calculate the order total on the servejr to prevent
-  // people from directly manipulating the amount on the client
-  return 1400;
-};
+
 const makePayment = catchAsync(async (req, res) => {
   const { items } = req.body;
 
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount(items),
+    amount: items.totalPrice * 100,
     currency: "usd",
     // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
     automatic_payment_methods: {
       enabled: true,
     },
-  }); 
+  });
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
