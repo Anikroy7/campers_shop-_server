@@ -20,7 +20,6 @@ router.post(
     req.body.price = parseInt(req.body.price);
     req.body.stockQuantity = parseInt(req.body.stockQuantity);
     req.body.ratings = parseInt(req.body.ratings);
-    console.log(req.body);
     next();
   },
   validateRequest(createProductValidationSchema),
@@ -34,11 +33,9 @@ router.put(
   uploader.array("images", 5),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = { ...req.body };
-    console.log(req.files, req.files, { ...req.body });
     req.body.price = parseInt(req.body.price);
     req.body.stockQuantity = parseInt(req.body.stockQuantity);
     req.body.ratings = parseInt(req.body.ratings);
-    console.log(req.body);
     next();
   },
   validateRequest(updateProductValidationSchema),
